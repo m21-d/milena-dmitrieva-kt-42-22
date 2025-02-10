@@ -5,6 +5,7 @@ namespace MilenaDmitrievaKt_42_22
         //123456
         //123
         //321
+        //5
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }
