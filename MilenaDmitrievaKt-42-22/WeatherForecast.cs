@@ -2,6 +2,7 @@ namespace MilenaDmitrievaKt_42_22
 {
     public class WeatherForecast
     {
+        //123456
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }
