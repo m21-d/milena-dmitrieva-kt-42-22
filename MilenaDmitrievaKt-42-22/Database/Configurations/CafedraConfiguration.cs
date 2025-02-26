@@ -22,14 +22,25 @@ namespace MilenaDmitrievaKt_42_22.Database.Configurations
                 .IsRequired()
                 .HasColumnName("Year")
                 .HasColumnType(ColumnType.Int);
-            builder.Property(p => p.Head)
+            builder.Property(p => p.HeadId)
                 .IsRequired()
                 .HasColumnName("Head_ID")
                 .HasColumnType(ColumnType.Int);
 
-            //TODO: связи9
 
-            
+            /////
+            builder.ToTable(TableName)
+                .HasOne(p => p.Head)
+                .WithOne()
+                .HasForeignKey(p => p.HeadId)
+                .HasConstraintName("fk_head_id")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.ToTable(TableName)
+                .HasIndex(p => p.HeadId, $"idx_{TableName}_fk_head_id");
+            builder.Navigation(p => p.Head)
+                .AutoInclude();
+
         }
     }
 }
