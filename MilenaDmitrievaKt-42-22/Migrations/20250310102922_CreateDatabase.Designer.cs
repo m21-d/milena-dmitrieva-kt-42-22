@@ -11,7 +11,7 @@ using MilenaDmitrievaKt_42_22.Database;
 namespace MilenaDmitrievaKt_42_22.Migrations
 {
     [DbContext(typeof(TeachersDbContext))]
-    [Migration("20250310095130_CreateDatabase")]
+    [Migration("20250310102922_CreateDatabase")]
     partial class CreateDatabase
     {
         /// <inheritdoc />
@@ -40,11 +40,11 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                         .HasColumnName("Cafedra_Name");
 
                     b.Property<int>("HeadId")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Head_ID");
 
                     b.Property<int>("Year")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Year");
 
                     b.HasKey("CafedraId")
@@ -86,15 +86,15 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LessonsId"));
 
                     b.Property<int>("Hours")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Hours");
 
                     b.Property<int>("SubjectId")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Subject_ID");
 
                     b.Property<int>("TeacherId")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Teacher_ID");
 
                     b.HasKey("LessonsId")
@@ -159,11 +159,11 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherId"));
 
                     b.Property<int>("CafedraId")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Cafedra_ID");
 
                     b.Property<int>("DegreeId")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Degree_ID");
 
                     b.Property<int>("HCafedraId")
@@ -182,7 +182,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                         .HasColumnName("Patronym");
 
                     b.Property<int>("PositionId")
-                        .HasColumnType("int4")
+                        .HasColumnType("int")
                         .HasColumnName("Position_ID");
 
                     b.Property<string>("Surname")
@@ -246,7 +246,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     b.HasOne("MilenaDmitrievaKt_42_22.Models.Cafedra", "HCafedra")
                         .WithOne("Head")
                         .HasForeignKey("MilenaDmitrievaKt_42_22.Models.Teacher", "HCafedraId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_head_id");
 

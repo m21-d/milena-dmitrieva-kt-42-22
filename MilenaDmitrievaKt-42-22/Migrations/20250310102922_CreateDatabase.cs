@@ -17,8 +17,8 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     Cafedra_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Cafedra_Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Year = table.Column<int>(type: "int4", nullable: false),
-                    Head_ID = table.Column<int>(type: "int4", nullable: false)
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Head_ID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,9 +73,9 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     Surname = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Patronym = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Cafedra_ID = table.Column<int>(type: "int4", nullable: false),
-                    Degree_ID = table.Column<int>(type: "int4", nullable: false),
-                    Position_ID = table.Column<int>(type: "int4", nullable: false),
+                    Cafedra_ID = table.Column<int>(type: "int", nullable: false),
+                    Degree_ID = table.Column<int>(type: "int", nullable: false),
+                    Position_ID = table.Column<int>(type: "int", nullable: false),
                     HCafedraId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -97,8 +97,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                         name: "fk_head_id",
                         column: x => x.HCafedraId,
                         principalTable: "Cafedra",
-                        principalColumn: "Cafedra_ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Cafedra_ID");
                     table.ForeignKey(
                         name: "fk_position_id",
                         column: x => x.Position_ID,
@@ -113,9 +112,9 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                 {
                     Lessons_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Teacher_ID = table.Column<int>(type: "int4", nullable: false),
-                    Subject_ID = table.Column<int>(type: "int4", nullable: false),
-                    Hours = table.Column<int>(type: "int4", nullable: false)
+                    Teacher_ID = table.Column<int>(type: "int", nullable: false),
+                    Subject_ID = table.Column<int>(type: "int", nullable: false),
+                    Hours = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
