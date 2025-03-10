@@ -12,5 +12,8 @@
         public Degree Degree { get; set; }
         public int PositionId {  get; set; }
         public Position Position { get; set; }
+
+        public int HCafedraId { get; set; }
+        public Cafedra HCafedra { get; set; }
     }
 }

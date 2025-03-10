@@ -31,8 +31,8 @@ namespace MilenaDmitrievaKt_42_22.Database.Configurations
             /////
             builder.ToTable(TableName)
                 .HasOne(p => p.Head)
-                .WithOne()
-                .HasForeignKey(p => p.HeadId)
+                .WithOne(p=>p.HCafedra)
+                .HasForeignKey<Teacher>(p => p.HCafedraId)
                 .HasConstraintName("fk_head_id")
                 .OnDelete(DeleteBehavior.Cascade);
 
