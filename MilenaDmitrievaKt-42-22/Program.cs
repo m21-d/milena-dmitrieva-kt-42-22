@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MilenaDmitrievaKt_42_22.Database;
 using NLog;
 using NLog.Web;
-
+using static MilenaDmitrievaKt_42_22.ServiceExtensions.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +20,8 @@ try
 
     builder.Services.AddDbContext<TeachersDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Services.AddServices();
 
     var app = builder.Build();
 

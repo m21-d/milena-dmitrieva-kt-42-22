@@ -38,8 +38,7 @@ namespace MilenaDmitrievaKt_42_22.Database.Configurations
 
             builder.ToTable(TableName)
                 .HasIndex(p => p.HeadId, $"idx_{TableName}_fk_head_id");
-            builder.Navigation(p => p.Head)
-                .AutoInclude();
+            //builder.Navigation(p => p.Head).AutoInclude();
 
         }
     }
