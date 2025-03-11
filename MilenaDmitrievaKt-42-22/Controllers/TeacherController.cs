@@ -19,7 +19,7 @@ namespace MilenaDmitrievaKt_42_22.Controllers
         }
 
         [HttpPost(Name = "GetTeachersByCafedra")]
-        public async Task<IActionResult> GetTeachersByCafedraAsync(TeacherCafedraFilter filter, CancellationToken cancellationToken =)
+        public async Task<IActionResult> GetTeachersByCafedraAsync(TeacherCafedraFilter filter, CancellationToken cancellationToken =default)
         {
             var teachers=await _teacherService.GetTeachersByCafedraAsync(filter,cancellationToken);
             return Ok(teachers);

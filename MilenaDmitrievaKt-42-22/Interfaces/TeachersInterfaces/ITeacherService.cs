@@ -6,7 +6,7 @@ namespace MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces
 {
     public interface ITeacherService
     {
-        public Task<Teacher> GetTeachersByCafedraAsync(TeacherCafedraFilter filter, CancellationToken cancellationToken);
+        public Task<Teacher[]> GetTeachersByCafedraAsync(TeacherCafedraFilter filter, CancellationToken cancellationToken);
     }
 
     public class TeacherService : ITeacherService
