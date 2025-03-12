@@ -23,7 +23,6 @@ namespace MilenaDmitrievaKt_42_22.Database.Configurations
                 .HasColumnName("Year")
                 .HasColumnType(ColumnType.Int);
             builder.Property(p => p.HeadId)
-                .IsRequired()
                 .HasColumnName("Head_ID")
                 .HasColumnType(ColumnType.Int);
 

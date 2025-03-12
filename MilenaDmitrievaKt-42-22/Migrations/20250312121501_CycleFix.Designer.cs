@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MilenaDmitrievaKt_42_22.Database;
 
@@ -11,9 +12,11 @@ using MilenaDmitrievaKt_42_22.Database;
 namespace MilenaDmitrievaKt_42_22.Migrations
 {
     [DbContext(typeof(TeachersDbContext))]
-    partial class TeachersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312121501_CycleFix")]
+    partial class CycleFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

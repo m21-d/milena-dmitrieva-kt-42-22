@@ -45,8 +45,7 @@ namespace MilenaDmitrievaKt_42_22.Database.Configurations
 
             builder.ToTable(TableName)
                 .HasIndex(p => p.CafedraId, $"idx_{TableName}_fk_cafedra_id");
-            builder.Navigation(p => p.Cafedra)
-                .AutoInclude();
+            //builder.Navigation(p => p.Cafedra).AutoInclude();
 
 
 
