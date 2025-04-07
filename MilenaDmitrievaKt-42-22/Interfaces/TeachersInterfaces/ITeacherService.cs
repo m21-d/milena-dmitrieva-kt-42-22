@@ -21,6 +21,11 @@ namespace MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces
             var teachers=_dbContext.Set<Teacher>().Where(w=>w.Cafedra.CafedraName==filter.CafedraName).ToArrayAsync(cancellationToken);
             return teachers;
         }
+        public Task<Teacher[]> GetTeachersByDegreeAsync(TeacherDegreeFilter filter, CancellationToken cancellationToken = default)
+        {
+            var teachers = _dbContext.Set<Teacher>().Where(w => w.Degree.DegreeName == filter.DegreeName).ToArrayAsync(cancellationToken);
+            return teachers;
+        }
     }
 
 }
