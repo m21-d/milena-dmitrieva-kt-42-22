@@ -5,7 +5,7 @@
 namespace MilenaDmitrievaKt_42_22.Migrations
 {
     /// <inheritdoc />
-    public partial class CycleFix2 : Migration
+    public partial class fixCycle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

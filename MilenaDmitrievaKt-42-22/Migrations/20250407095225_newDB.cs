@@ -5,26 +5,11 @@
 namespace MilenaDmitrievaKt_42_22.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDatabase : Migration
+    public partial class newDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Cafedra",
-                columns: table => new
-                {
-                    Cafedra_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Cafedra_Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    Head_ID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_Cafedra_cafedra_id", x => x.Cafedra_ID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Degree",
                 columns: table => new
@@ -65,6 +50,21 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cafedra",
+                columns: table => new
+                {
+                    Cafedra_ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cafedra_Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Head_ID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_Cafedra_cafedra_id", x => x.Cafedra_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Teacher",
                 columns: table => new
                 {
@@ -75,8 +75,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     Patronym = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Cafedra_ID = table.Column<int>(type: "int", nullable: false),
                     Degree_ID = table.Column<int>(type: "int", nullable: false),
-                    Position_ID = table.Column<int>(type: "int", nullable: false),
-                    HCafedraId = table.Column<int>(type: "int", nullable: false)
+                    Position_ID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,11 +92,6 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                         principalTable: "Degree",
                         principalColumn: "Degree_ID",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_head_id",
-                        column: x => x.HCafedraId,
-                        principalTable: "Cafedra",
-                        principalColumn: "Cafedra_ID");
                     table.ForeignKey(
                         name: "fk_position_id",
                         column: x => x.Position_ID,
@@ -139,6 +133,13 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                 column: "Head_ID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cafedra_Head_ID",
+                table: "Cafedra",
+                column: "Head_ID",
+                unique: true,
+                filter: "[Head_ID] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "idx_Lessons_fk_subject_id",
                 table: "Lessons",
                 column: "Subject_ID");
@@ -163,16 +164,21 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                 table: "Teacher",
                 column: "Position_ID");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Teacher_HCafedraId",
-                table: "Teacher",
-                column: "HCafedraId",
-                unique: true);
+            migrationBuilder.AddForeignKey(
+                name: "fk_head_id",
+                table: "Cafedra",
+                column: "Head_ID",
+                principalTable: "Teacher",
+                principalColumn: "Teacher_ID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "fk_head_id",
+                table: "Cafedra");
+
             migrationBuilder.DropTable(
                 name: "Lessons");
 

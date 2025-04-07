@@ -12,8 +12,8 @@ using MilenaDmitrievaKt_42_22.Database;
 namespace MilenaDmitrievaKt_42_22.Migrations
 {
     [DbContext(typeof(TeachersDbContext))]
-    [Migration("20250312125202_CycleFix2")]
-    partial class CycleFix2
+    [Migration("20250407100527_fixCycle")]
+    partial class fixCycle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,10 @@ namespace MilenaDmitrievaKt_42_22.Migrations
 
                     b.HasKey("CafedraId")
                         .HasName("pk_Cafedra_cafedra_id");
+
+                    b.HasIndex("HeadId")
+                        .IsUnique()
+                        .HasFilter("[Head_ID] IS NOT NULL");
 
                     b.HasIndex(new[] { "HeadId" }, "idx_Cafedra_fk_head_id");
 
@@ -167,9 +171,6 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Degree_ID");
 
-                    b.Property<int?>("HCafedraId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -195,10 +196,6 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     b.HasKey("TeacherId")
                         .HasName("pk_Teacher_teacher_id");
 
-                    b.HasIndex("HCafedraId")
-                        .IsUnique()
-                        .HasFilter("[HCafedraId] IS NOT NULL");
-
                     b.HasIndex(new[] { "CafedraId" }, "idx_Teacher_fk_cafedra_id");
 
                     b.HasIndex(new[] { "DegreeId" }, "idx_Teacher_fk_degree_id");
@@ -206,6 +203,17 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     b.HasIndex(new[] { "PositionId" }, "idx_Teacher_fk_position_id");
 
                     b.ToTable("Teacher", (string)null);
+                });
+
+            modelBuilder.Entity("MilenaDmitrievaKt_42_22.Models.Cafedra", b =>
+                {
+                    b.HasOne("MilenaDmitrievaKt_42_22.Models.Teacher", "Head")
+                        .WithOne()
+                        .HasForeignKey("MilenaDmitrievaKt_42_22.Models.Cafedra", "HeadId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_head_id");
+
+                    b.Navigation("Head");
                 });
 
             modelBuilder.Entity("MilenaDmitrievaKt_42_22.Models.Lessons", b =>
@@ -245,12 +253,6 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_degree_id");
 
-                    b.HasOne("MilenaDmitrievaKt_42_22.Models.Cafedra", "HCafedra")
-                        .WithOne("Head")
-                        .HasForeignKey("MilenaDmitrievaKt_42_22.Models.Teacher", "HCafedraId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .HasConstraintName("fk_head_id");
-
                     b.HasOne("MilenaDmitrievaKt_42_22.Models.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
@@ -262,14 +264,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
 
                     b.Navigation("Degree");
 
-                    b.Navigation("HCafedra");
-
                     b.Navigation("Position");
-                });
-
-            modelBuilder.Entity("MilenaDmitrievaKt_42_22.Models.Cafedra", b =>
-                {
-                    b.Navigation("Head");
                 });
 #pragma warning restore 612, 618
         }
