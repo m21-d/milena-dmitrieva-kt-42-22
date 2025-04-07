@@ -13,5 +13,9 @@
         public int PositionId {  get; set; }
         public Position Position { get; set; }
 
+        public bool IsValidName(string s)
+        {
+            return s.All(Char.IsLetter) && Char.IsUpper(s[0]);
+        }
     }
 }
