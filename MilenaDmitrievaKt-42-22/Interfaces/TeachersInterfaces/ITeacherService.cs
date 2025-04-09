@@ -6,7 +6,7 @@ namespace MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces
 {
     public interface ITeacherService
     {
-        public Task<Teacher[]> GetTeachersByCafedraAsync(TeacherCafedraFilter filter, CancellationToken cancellationToken);
+        public Task<Teacher[]> GetTeachersAsync(TeacherFilter filter, CancellationToken cancellationToken);
     }
 
     public class TeacherService : ITeacherService
@@ -16,16 +16,16 @@ namespace MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces
         {
             _dbContext = dbContext;
         }
-        public Task<Teacher[]>GetTeachersByCafedraAsync(TeacherCafedraFilter filter, CancellationToken cancellationToken = default)
+        public Task<Teacher[]> GetTeachersAsync(TeacherFilter filter, CancellationToken cancellationToken = default)
         {
-            var teachers=_dbContext.Set<Teacher>().Where(w=>w.Cafedra.CafedraName==filter.CafedraName).ToArrayAsync(cancellationToken);
+            var teachers = _dbContext.Set<Teacher>().Where(w =>
+                (filter.CafedraName == null || w.Cafedra.CafedraName == filter.CafedraName) &&
+                (filter.DegreeName == null || w.Degree.DegreeName == filter.DegreeName) &&
+                (filter.PositionName == null || w.Position.PositionName == filter.PositionName))
+                .ToArrayAsync(cancellationToken);
             return teachers;
         }
-        public Task<Teacher[]> GetTeachersByDegreeAsync(TeacherDegreeFilter filter, CancellationToken cancellationToken = default)
-        {
-            var teachers = _dbContext.Set<Teacher>().Where(w => w.Degree.DegreeName == filter.DegreeName).ToArrayAsync(cancellationToken);
-            return teachers;
-        }
+
     }
 
 }

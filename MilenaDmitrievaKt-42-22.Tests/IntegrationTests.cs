@@ -93,7 +93,7 @@ namespace MilenaDmitrievaKt_42_22.Tests
             await ctx.SaveChangesAsync();
 
             // Act
-            var filter = new Filters.TeacherFilters.TeacherCafedraFilter
+            var filter = new Filters.TeacherFilters.TeacherFilter
             {
                 CafedraName = "ААА"
             };

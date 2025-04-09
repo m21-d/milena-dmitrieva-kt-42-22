@@ -18,10 +18,10 @@ namespace MilenaDmitrievaKt_42_22.Controllers
             _teacherService = teacherService;
         }
 
-        [HttpPost(Name = "GetTeachersByCafedra")]
-        public async Task<IActionResult> GetTeachersByCafedraAsync(TeacherCafedraFilter filter, CancellationToken cancellationToken =default)
+        [HttpPost(Name = "GetTeachersByCafedraDegreePosition")]
+        public async Task<IActionResult> GetTeachersAsync(TeacherFilter filter, CancellationToken cancellationToken =default)
         {
-            var teachers=await _teacherService.GetTeachersByCafedraAsync(filter,cancellationToken);
+            var teachers=await _teacherService.GetTeachersAsync(filter,cancellationToken);
             return Ok(teachers);
         }
     }
