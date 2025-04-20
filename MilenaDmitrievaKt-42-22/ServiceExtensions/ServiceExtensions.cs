@@ -9,6 +9,8 @@ namespace MilenaDmitrievaKt_42_22.ServiceExtensions
         {
             services.AddScoped<ITeacherService, TeacherService>();
             services.AddScoped<ICafedraService, CafedraService>();
+            services.AddScoped<ISubjectService, SubjectService>();
+            services.AddScoped<ILessonsService, LessonsService>();
             return services;
         }
     }
