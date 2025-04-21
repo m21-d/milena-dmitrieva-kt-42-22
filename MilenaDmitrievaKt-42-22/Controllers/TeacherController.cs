@@ -17,37 +17,59 @@ namespace MilenaDmitrievaKt_42_22.Controllers
         private readonly ISubjectService _subjectService;
         private readonly ILessonsService _lessonsService;
 
-        public TeachersController(ILogger<TeachersController> logger, ITeacherService teacherService)
+        public TeachersController(ILogger<TeachersController> logger, ITeacherService teacherService, ICafedraService cafedraService, ISubjectService subjectService, ILessonsService lessonsService)
         {
             _logger = logger;
             _teacherService = teacherService;
+            _cafedraService = cafedraService;
+            _subjectService = subjectService;
+            _lessonsService = lessonsService;
         }
 
-        [HttpPost(Name = "GetTeachersByCafedraDegreePosition")]
+        [HttpPost("GetTeachersByCafedraDegreePosition")]
         public async Task<IActionResult> GetTeachersAsync(TeacherFilter filter, CancellationToken cancellationToken =default)
         {
             var teachers=await _teacherService.GetTeachersAsync(filter,cancellationToken);
             return Ok(teachers);
         }
 
-        [HttpPost(Name = "GetCafedrasByYearNumberOfTeachers")]
+        [HttpPost("GetCafedrasByYearNumberOfTeachers")]
         public async Task<IActionResult> GetCafedrasAsync(CafedraFilter filter, CancellationToken cancellationToken = default)
         {
             var a = await _cafedraService.GetCafedrasAsync(filter, cancellationToken);
             return Ok(a);
         }
 
-        [HttpPost(Name = "GetSubjectsByHoursTeacherSurname")]
+        [HttpPost("GetSubjectsByHoursTeacherSurname")]
         public async Task<IActionResult> GetSubjectsAsync(SubjectFilter filter, CancellationToken cancellationToken = default)
         {
             var a = await _subjectService.GetSubjectsAsync(filter, cancellationToken);
             return Ok(a);
         }
 
-        [HttpPost(Name = "GetLessonsByTeacherSurnameCafedraNameSubjectName")]
-        public async Task<IActionResult> GetSLessonsAsync(LessonsFilter filter, CancellationToken cancellationToken = default)
+        [HttpPost("GetLessonsByTeacherSurnameCafedraNameSubjectName")]
+        public async Task<IActionResult> GetLessonsAsync(LessonsFilter filter, CancellationToken cancellationToken = default)
         {
             var a = await _lessonsService.GetLessonsAsync(filter, cancellationToken);
+            return Ok(a);
+        }
+
+        [HttpDelete("DeleteCafedra")]
+        public async Task<IActionResult> DeleteCafedraAsync(int id,CancellationToken cancellationToken = default)
+        {
+            var a= await _cafedraService.DeleteCafedraAsync(id,cancellationToken);
+            return Ok(a);
+        }
+        [HttpPost("UpdateCafedra")]
+        public async Task<IActionResult> UpdateCafedraAsync(CafedraUpdate newCafedra, CancellationToken cancellationToken = default)
+        {
+            var a = await _cafedraService.UpdateCafedraAsync(newCafedra, cancellationToken);
+            return Ok(a);
+        }
+        [HttpPost("AddCafedra")]
+        public async Task<IActionResult> AddCafedraAsync(CafedraAdd newCafedra, CancellationToken cancellationToken = default)
+        {
+            var a = await _cafedraService.AddCafedraAsync(newCafedra, cancellationToken);
             return Ok(a);
         }
     }
