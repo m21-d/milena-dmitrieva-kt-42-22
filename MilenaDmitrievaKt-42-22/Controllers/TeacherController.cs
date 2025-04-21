@@ -72,5 +72,43 @@ namespace MilenaDmitrievaKt_42_22.Controllers
             var a = await _cafedraService.AddCafedraAsync(newCafedra, cancellationToken);
             return Ok(a);
         }
+
+        [HttpDelete("DeleteTeacher")]
+        public async Task<IActionResult> DeleteTeacherAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var a = await _teacherService.DeleteTeacherAsync(id, cancellationToken);
+            return Ok(a);
+        }
+        [HttpPost("UpdateTeacher")]
+        public async Task<IActionResult> UpdateTeacherAsync(TeacherUpdate t, CancellationToken cancellationToken = default)
+        {
+            var a = await _teacherService.UpdateTeacherAsync(t, cancellationToken);
+            return Ok(a);
+        }
+        [HttpPost("AddTeacher")]
+        public async Task<IActionResult> AddTeacherAsync(TeacherAdd t, CancellationToken cancellationToken = default)
+        {
+            var a = await _teacherService.AddTeacherAsync(t, cancellationToken);
+            return Ok(a);
+        }
+
+        [HttpDelete("DeleteSubject")]
+        public async Task<IActionResult> DeleteSubjectAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var a = await _subjectService.DeleteSubjectAsync(id, cancellationToken);
+            return Ok(a);
+        }
+        [HttpPost("UpdateSubject")]
+        public async Task<IActionResult> UpdateSubjectAsync(SubjectUpdate t, CancellationToken cancellationToken = default)
+        {
+            var a = await _subjectService.UpdateSubjectAsync(t, cancellationToken);////TODO
+            return Ok(a);
+        }
+        [HttpPost("AddTeacher")]
+        public async Task<IActionResult> AddTeacherAsync(TeacherAdd t, CancellationToken cancellationToken = default)
+        {
+            var a = await _teacherService.AddTeacherAsync(t, cancellationToken);
+            return Ok(a);
+        }
     }
 }

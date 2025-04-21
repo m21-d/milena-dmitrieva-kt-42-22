@@ -53,19 +53,18 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
         }
         public Task<int> AddCafedraAsync(CafedraAdd newCafedra, CancellationToken cancellationToken = default)
         {
-            if (newCafedra.CafedraName != null && newCafedra.Year != null)
+
+            Cafedra cafedra = new Cafedra
             {
-                Cafedra cafedra = new Cafedra
-                {
-                    CafedraName = newCafedra.CafedraName,
-                    Year = (int)newCafedra.Year
-                };
+                CafedraName = newCafedra.CafedraName,
+                Year = newCafedra.Year
+            };
 
-                if (newCafedra.HeadId != null)
-                    cafedra.HeadId = newCafedra.HeadId;
+            if (newCafedra.HeadId != null)
+                cafedra.HeadId = newCafedra.HeadId;
 
-                _dbContext.Set<Cafedra>().Add(cafedra);
-            }
+            _dbContext.Set<Cafedra>().Add(cafedra);
+
 
             var a = _dbContext.SaveChangesAsync(cancellationToken);
             return a;
