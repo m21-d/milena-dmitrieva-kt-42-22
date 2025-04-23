@@ -24,8 +24,8 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
         {
             var a = _dbContext.Set<Cafedra>().Where(w =>
                 (filter.Year == null || w.Year == filter.Year) &&
-                (filter.NumberOfTeachers == null || _dbContext.Set<Teacher>().Where(e => e.CafedraId == w.CafedraId).Count() == filter.NumberOfTeachers))
-                .ToArrayAsync(cancellationToken);
+                (filter.NumberOfTeachers == null || _dbContext.Set<Teacher>().Where(e => e.CafedraId == w.CafedraId).Count() == filter.NumberOfTeachers)).Include("Head")
+                .ToArrayAsync(cancellationToken);//TODO цикл
             return a;
         }
         public Task<int> DeleteCafedraAsync(int id, CancellationToken cancellationToken = default)

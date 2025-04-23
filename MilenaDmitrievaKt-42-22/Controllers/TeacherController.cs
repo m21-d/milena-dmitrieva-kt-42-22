@@ -101,13 +101,25 @@ namespace MilenaDmitrievaKt_42_22.Controllers
         [HttpPost("UpdateSubject")]
         public async Task<IActionResult> UpdateSubjectAsync(SubjectUpdate t, CancellationToken cancellationToken = default)
         {
-            var a = await _subjectService.UpdateSubjectAsync(t, cancellationToken);////TODO
+            var a = await _subjectService.UpdateSubjectAsync(t, cancellationToken);
             return Ok(a);
         }
-        [HttpPost("AddTeacher")]
-        public async Task<IActionResult> AddTeacherAsync(TeacherAdd t, CancellationToken cancellationToken = default)
+        [HttpPost("AddSubject")]
+        public async Task<IActionResult> AddSubjectAsync(SubjectAdd t, CancellationToken cancellationToken = default)
         {
-            var a = await _teacherService.AddTeacherAsync(t, cancellationToken);
+            var a = await _subjectService.AddSubjectAsync(t, cancellationToken);
+            return Ok(a);
+        }
+        [HttpPost("UpdateLessons")]
+        public async Task<IActionResult> UpdateLessonsAsync(LessonsUpdate t, CancellationToken cancellationToken = default)
+        {
+            var a = await _lessonsService.UpdateLessonsAsync(t, cancellationToken);
+            return Ok(a);
+        }
+        [HttpPost("AddLessons")]
+        public async Task<IActionResult> AddLessonsAsync(LessonsAdd t, CancellationToken cancellationToken = default)
+        {
+            var a = await _lessonsService.AddLessonsAsync(t, cancellationToken);
             return Ok(a);
         }
     }

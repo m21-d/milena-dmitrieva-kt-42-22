@@ -8,6 +8,9 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
     public interface ISubjectService
     {
         public Task<Subject[]> GetSubjectsAsync(SubjectFilter filter, CancellationToken cancellationToken);
+        public Task<int> DeleteSubjectAsync(int id, CancellationToken cancellationToken);
+        public Task<int> UpdateSubjectAsync(SubjectUpdate t, CancellationToken cancellationToken);
+        public Task<int> AddSubjectAsync(SubjectAdd t, CancellationToken cancellationToken);
     }
 
     public class SubjectService : ISubjectService
@@ -39,6 +42,37 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
              .ToArrayAsync(cancellationToken);
             return a;
         }
+        public Task<int> DeleteSubjectAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var a = _dbContext.Set<Subject>().Where(e => e.SubjectId == id).ExecuteDeleteAsync(cancellationToken);
 
+            return a;
+        }
+        public Task<int> UpdateSubjectAsync(SubjectUpdate t, CancellationToken cancellationToken = default)
+        {
+            var b = _dbContext.Set<Subject>().Where(e => e.SubjectId == t.SubjectId);
+            if (b.Any())
+            {
+                var a = b.First();
+                if (t.SubjectName != null)
+                    a.SubjectName = t.SubjectName;
+            }
+
+            var a1 = _dbContext.SaveChangesAsync(cancellationToken);
+            return a1;
+        }
+        public Task<int> AddSubjectAsync(SubjectAdd t, CancellationToken cancellationToken = default)
+        {
+
+            Subject t1 = new Subject
+            {
+                SubjectName = t.SubjectName
+            };
+
+            _dbContext.Set<Subject>().Add(t1);
+
+            var a = _dbContext.SaveChangesAsync(cancellationToken);
+            return a;
+        }
     }
 }
