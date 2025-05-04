@@ -97,7 +97,7 @@ namespace MilenaDmitrievaKt_42_22.Tests
             {
                 CafedraName = "ААА"
             };
-            var result = await teacherService.GetTeachersByCafedraAsync(filter, CancellationToken.None);
+            var result = await teacherService.GetTeachersAsync(filter, CancellationToken.None);
 
             // Assert
             Assert.Equal(2, result.Length);

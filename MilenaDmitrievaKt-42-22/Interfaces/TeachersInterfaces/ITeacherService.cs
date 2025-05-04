@@ -26,12 +26,43 @@ namespace MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces
             var teachers = _dbContext.Set<Teacher>().Where(w =>
                 (filter.CafedraName == null || w.Cafedra.CafedraName == filter.CafedraName) &&
                 (filter.DegreeName == null || w.Degree.DegreeName == filter.DegreeName) &&
-                (filter.PositionName == null || w.Position.PositionName == filter.PositionName))
+                (filter.PositionName == null || w.Position.PositionName == filter.PositionName)).Include("Cafedra.Head").Select(t => new Teacher
+                {
+                    TeacherId = t.TeacherId,
+                    Surname = t.Surname,
+                    Name = t.Name,
+                    Patronym = t.Patronym,
+                    CafedraId = t.CafedraId,
+                    Cafedra = new Cafedra
+                    {
+                        CafedraId = t.Cafedra.CafedraId,
+                        CafedraName = t.Cafedra.CafedraName,
+                        Year = t.Cafedra.Year,
+                        HeadId = t.Cafedra.HeadId,
+                        Head = t.Cafedra.Head == null ? null : new Teacher
+                        {
+                            TeacherId = t.Cafedra.Head.TeacherId,
+                            Surname = t.Cafedra.Head.Surname,
+                            Name = t.Cafedra.Head.Name,
+                            Patronym = t.Cafedra.Head.Patronym,
+                            CafedraId = t.Cafedra.Head.CafedraId,
+                            DegreeId = t.Cafedra.Head.DegreeId,
+                            Degree = t.Cafedra.Head.Degree,
+                            PositionId = t.Cafedra.Head.PositionId,
+                            Position = t.Cafedra.Head.Position
+                        }
+                    },
+                    DegreeId = t.DegreeId,
+                    Degree = t.Degree,
+                    PositionId = t.PositionId,
+                    Position = t.Position
+                })
                 .ToArrayAsync(cancellationToken);
             return teachers;
         }
         public Task<int> DeleteTeacherAsync(int id, CancellationToken cancellationToken = default)
         {
+            _dbContext.Set<Cafedra>().Where(e => e.HeadId == id).ExecuteUpdate(e => e.SetProperty(t => t.HeadId, t1=>null));
             var a = _dbContext.Set<Teacher>().Where(e => e.TeacherId == id).ExecuteDeleteAsync(cancellationToken);
 
             return a;
@@ -67,7 +98,7 @@ namespace MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces
                 Surname = t.Surname,
                 Name = t.Name,
                 Patronym = t.Patronym,
-                CafedraId= t.CafedraId,
+                CafedraId = t.CafedraId,
                 DegreeId = t.DegreeId,
                 PositionId = t.PositionId
             };

@@ -24,8 +24,27 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
         {
             var a = _dbContext.Set<Cafedra>().Where(w =>
                 (filter.Year == null || w.Year == filter.Year) &&
-                (filter.NumberOfTeachers == null || _dbContext.Set<Teacher>().Where(e => e.CafedraId == w.CafedraId).Count() == filter.NumberOfTeachers)).Include("Head")
-                .ToArrayAsync(cancellationToken);//TODO цикл
+                (filter.NumberOfTeachers == null || _dbContext.Set<Teacher>().Where(e => e.CafedraId == w.CafedraId).Count() == filter.NumberOfTeachers)).Include("Head").Select(t => new Cafedra
+
+                {
+                    CafedraId = t.CafedraId,
+                    CafedraName = t.CafedraName,
+                    Year = t.Year,
+                    HeadId = t.HeadId,
+                    Head = t.Head == null ? null : new Teacher
+                    {
+                        TeacherId = t.Head.TeacherId,
+                        Surname = t.Head.Surname,
+                        Name = t.Head.Name,
+                        Patronym = t.Head.Patronym,
+                        CafedraId = t.Head.CafedraId,
+                        DegreeId = t.Head.DegreeId,
+                        Degree = t.Head.Degree,
+                        PositionId = t.Head.PositionId,
+                        Position = t.Head.Position
+                    }
+                })
+                .ToArrayAsync(cancellationToken);
             return a;
         }
         public Task<int> DeleteCafedraAsync(int id, CancellationToken cancellationToken = default)

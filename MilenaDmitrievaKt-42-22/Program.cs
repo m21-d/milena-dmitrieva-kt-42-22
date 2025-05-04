@@ -3,6 +3,7 @@ using MilenaDmitrievaKt_42_22.Database;
 using MilenaDmitrievaKt_42_22.Middlewares;
 using NLog;
 using NLog.Web;
+using System.Text.Json.Serialization;
 using static MilenaDmitrievaKt_42_22.ServiceExtensions.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,7 @@ try
     builder.Host.UseNLog();
     // Add services to the container.
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers();//TODO?
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();

@@ -24,7 +24,46 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
             var a = _dbContext.Set<Lessons>().Where(w =>
                 (filter.TeacherSurname == null || w.Teacher.Surname == filter.TeacherSurname) &&
                 (filter.CafedraName == null || w.Teacher.Cafedra.CafedraName == filter.CafedraName) &&
-                (filter.SubjectName == null || w.Subject.SubjectName == filter.SubjectName))
+                (filter.SubjectName == null || w.Subject.SubjectName == filter.SubjectName)).Include("Teacher.Cafedra.Head").Select(t => new Lessons
+                {
+                    LessonsId = t.LessonsId,
+                    Hours = t.Hours,
+                    SubjectId = t.SubjectId,
+                    Subject = t.Subject,
+                    TeacherId = t.TeacherId,
+                    Teacher = new Teacher
+                    {
+                        TeacherId = t.Teacher.TeacherId,
+                        Surname = t.Teacher.Surname,
+                        Name = t.Teacher.Name,
+                        Patronym = t.Teacher.Patronym,
+                        CafedraId = t.Teacher.CafedraId,
+                        Cafedra = new Cafedra
+                        {
+                            CafedraId = t.Teacher.Cafedra.CafedraId,
+                            CafedraName = t.Teacher.Cafedra.CafedraName,
+                            Year = t.Teacher.Cafedra.Year,
+                            HeadId = t.Teacher.Cafedra.HeadId,
+                            Head = t.Teacher.Cafedra.Head == null ? null : new Teacher
+                            {
+                                TeacherId = t.Teacher.Cafedra.Head.TeacherId,
+                                Surname = t.Teacher.Cafedra.Head.Surname,
+                                Name = t.Teacher.Cafedra.Head.Name,
+                                Patronym = t.Teacher.Cafedra.Head.Patronym,
+                                CafedraId = t.Teacher.Cafedra.Head.CafedraId,
+                                DegreeId = t.Teacher.Cafedra.Head.DegreeId,
+                                Degree = t.Teacher.Cafedra.Head.Degree,
+                                PositionId = t.Teacher.Cafedra.Head.PositionId,
+                                Position = t.Teacher.Cafedra.Head.Position
+                            }
+                        },
+                        DegreeId = t.Teacher.DegreeId,
+                        Degree = t.Teacher.Degree,
+                        PositionId = t.Teacher.PositionId,
+                        Position = t.Teacher.Position
+                    }
+
+                })
                 .ToArrayAsync(cancellationToken);
             return a;
         }

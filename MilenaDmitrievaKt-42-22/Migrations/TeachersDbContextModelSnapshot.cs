@@ -75,7 +75,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     b.HasKey("DegreeId")
                         .HasName("pk_Degree_degree_id");
 
-                    b.ToTable("Degree");
+                    b.ToTable("Degree", (string)null);
                 });
 
             modelBuilder.Entity("MilenaDmitrievaKt_42_22.Models.Lessons", b =>
@@ -127,7 +127,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     b.HasKey("PositionId")
                         .HasName("pk_Position_position_id");
 
-                    b.ToTable("Position");
+                    b.ToTable("Position", (string)null);
                 });
 
             modelBuilder.Entity("MilenaDmitrievaKt_42_22.Models.Subject", b =>
@@ -148,7 +148,7 @@ namespace MilenaDmitrievaKt_42_22.Migrations
                     b.HasKey("SubjectId")
                         .HasName("pk_Subject_subject_id");
 
-                    b.ToTable("Subject");
+                    b.ToTable("Subject", (string)null);
                 });
 
             modelBuilder.Entity("MilenaDmitrievaKt_42_22.Models.Teacher", b =>
