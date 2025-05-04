@@ -49,8 +49,11 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
         }
         public Task<int> DeleteCafedraAsync(int id, CancellationToken cancellationToken = default)
         {
-            var a = _dbContext.Set<Cafedra>().Where(e => e.CafedraId == id).ExecuteDeleteAsync(cancellationToken);
-
+            
+            var t = _dbContext.Set<Cafedra>().Find(id);
+            if (t != null)
+                _dbContext.Set<Cafedra>().Remove(t);
+            var a = _dbContext.SaveChangesAsync(cancellationToken);
             return a;
         }
         public Task<int> UpdateCafedraAsync(CafedraUpdate newCafedra, CancellationToken cancellationToken = default)

@@ -44,8 +44,11 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
         }
         public Task<int> DeleteSubjectAsync(int id, CancellationToken cancellationToken = default)
         {
-            var a = _dbContext.Set<Subject>().Where(e => e.SubjectId == id).ExecuteDeleteAsync(cancellationToken);
-
+            
+            var t = _dbContext.Set<Subject>().Find(id);
+            if (t != null)
+                _dbContext.Set<Subject>().Remove(t);
+            var a = _dbContext.SaveChangesAsync(cancellationToken);
             return a;
         }
         public Task<int> UpdateSubjectAsync(SubjectUpdate t, CancellationToken cancellationToken = default)

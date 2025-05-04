@@ -62,9 +62,13 @@ namespace MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces
         }
         public Task<int> DeleteTeacherAsync(int id, CancellationToken cancellationToken = default)
         {
-            _dbContext.Set<Cafedra>().Where(e => e.HeadId == id).ExecuteUpdate(e => e.SetProperty(t => t.HeadId, t1=>null));
-            var a = _dbContext.Set<Teacher>().Where(e => e.TeacherId == id).ExecuteDeleteAsync(cancellationToken);
-
+            var c = _dbContext.Set<Cafedra>().Where(e => e.HeadId == id);
+            if (c.Any())
+                c.ExecuteUpdate(e => e.SetProperty(t => t.HeadId, t1 => null));
+            var t = _dbContext.Set<Teacher>().Find(id);
+            if (t != null)
+                _dbContext.Set<Teacher>().Remove(t);
+            var a = _dbContext.SaveChangesAsync(cancellationToken);
             return a;
         }
         public Task<int> UpdateTeacherAsync(TeacherUpdate t, CancellationToken cancellationToken = default)
