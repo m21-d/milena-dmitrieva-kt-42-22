@@ -30,14 +30,16 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
                 l2.LessonsId,
                 l2.Hours,
                 l2.SubjectId
-            }).Where(e => (filter.TeacherSurname == null) || (e.Surname == filter.TeacherSurname));
+            });
             var a = _dbContext.Set<Subject>().GroupJoin(l, s => s.SubjectId, l1 => l1.SubjectId, (s2, l2) => new
             {
                 s2,
                 hoursSum = l2.Sum(e => e.Hours),
+                ts=l2.Where(e => (filter.TeacherSurname == null) || (e.Surname == filter.TeacherSurname)).Any(),
             }).Where(e =>
-            ((filter.HoursMax == null) || (e.hoursSum < filter.HoursMax)) &&
-            ((filter.HoursMin == null) || (e.hoursSum > filter.HoursMin)))
+            ((filter.HoursMax == null) || (e.hoursSum <= filter.HoursMax)) &&
+            ((filter.HoursMin == null) || (e.hoursSum >= filter.HoursMin)))
+            .Where(e => (filter.TeacherSurname == null) || (e.ts))
             .Select(e => e.s2)
              .ToArrayAsync(cancellationToken);
             return a;

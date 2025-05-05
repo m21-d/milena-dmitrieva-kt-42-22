@@ -5,6 +5,7 @@ using MilenaDmitrievaKt_42_22.Interfaces.TeachersInterfaces;
 using MilenaDmitrievaKt_42_22.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -103,7 +104,7 @@ namespace MilenaDmitrievaKt_42_22.Tests
 
                 new Teacher
                 {
-                    Surname="Сидоров",
+                    Surname="Иванов123",
                     Name="Иван",
                     Patronym="Иванович",
                     PositionId=1,
@@ -196,10 +197,74 @@ namespace MilenaDmitrievaKt_42_22.Tests
                 },
             };
             await ctx.Set<Subject>().AddRangeAsync(subjects);
+            var lessons = new List<Lessons>
+            {
+                new Lessons
+                {
+                    SubjectId=1,
+                    TeacherId=7,
+                    Hours=10
+                },
+                new Lessons
+                {
+                    SubjectId=1,
+                    TeacherId=3,
+                    Hours=8
+                },
+                new Lessons
+                {
+                    SubjectId=2,
+                    TeacherId=7,
+                    Hours=16
+                },
+                new Lessons
+                {
+                    SubjectId=2,
+                    TeacherId=4,
+                    Hours=6
+                },
+                new Lessons
+                {
+                    SubjectId=2,
+                    TeacherId=3,
+                    Hours=12
+                },
+                new Lessons
+                {
+                    SubjectId=2,
+                    TeacherId=3,
+                    Hours=10
+                },
+                new Lessons
+                {
+                    SubjectId=6,
+                    TeacherId=3,
+                    Hours=10
+                },
+                new Lessons
+                {
+                    SubjectId=2,
+                    TeacherId=8,
+                    Hours=10
+                },
+                new Lessons
+                {
+                    SubjectId=5,
+                    TeacherId=9,
+                    Hours=10
+                },
+                new Lessons
+                {
+                    SubjectId=3,
+                    TeacherId=5,
+                    Hours=10
+                },
+            };
+            await ctx.Set<Lessons>().AddRangeAsync(lessons);
             await ctx.SaveChangesAsync();
             return ctx;
         }
-        /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////TODO: тест новой
         [Fact]
         public async Task GetTeachersByCafedraAsync_qwe_7Obj()
         {
@@ -348,9 +413,46 @@ namespace MilenaDmitrievaKt_42_22.Tests
             // Assert
             Assert.Equal(0, result.Length);
         }
-        /////////////////////////////////////////////TODO: ниже прописать данные для тестов
+        /////////////////////////////////////////////
         [Fact]
-        public async Task GetSubjectsByHours_()
+        public async Task GetSubjectsByHours_12_20_1()
+        {
+            // Arrange
+            var ctx = await Arrange();
+            var subjectService = new SubjectService(ctx);
+            // Act
+            var filter = new Filters.SubjectFilter
+            {
+                HoursMin = 12,
+                HoursMax = 20,
+            };
+            var result = await subjectService.GetSubjectsAsync(filter, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(1, result.Length);
+        }
+
+
+        [Fact]
+        public async Task GetSubjectsByTeacherSurname_Иванов123_3()
+        {
+            // Arrange
+            var ctx = await Arrange();
+            var subjectService = new SubjectService(ctx);
+            // Act
+            var filter = new Filters.SubjectFilter
+            {
+                TeacherSurname = "Иванов123"
+            };
+            var result = await subjectService.GetSubjectsAsync(filter, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(3, result.Length);
+        }
+
+
+        [Fact]
+        public async Task GetSubjectsByHoursTeacherSurname_10_60_Иванов_2()
         {
             // Arrange
             var ctx = await Arrange();
@@ -359,52 +461,15 @@ namespace MilenaDmitrievaKt_42_22.Tests
             var filter = new Filters.SubjectFilter
             {
                 HoursMin = 10,
-                HoursMax = 20,
+                HoursMax = 60,
+                TeacherSurname = "Иванов"
             };
             var result = await subjectService.GetSubjectsAsync(filter, CancellationToken.None);
 
             // Assert
-            Assert.Equal(7, result.Length);
+            Assert.Equal(2, result.Length);
         }
-
-
-        [Fact]
-        public async Task GetSubjectsByTeacherSurname_()
-        {
-            // Arrange
-            var ctx = await Arrange();
-            var subjectService = new SubjectService(ctx);
-            // Act
-            var filter = new Filters.SubjectFilter
-            {
-                TeacherSurname = "a"
-            };
-            var result = await subjectService.GetSubjectsAsync(filter, CancellationToken.None);
-
-            // Assert
-            Assert.Equal(7, result.Length);
-        }
-
-
-        [Fact]
-        public async Task GetSubjectsByHoursTeacherSurname_()
-        {
-            // Arrange
-            var ctx = await Arrange();
-            var subjectService = new SubjectService(ctx);
-            // Act
-            var filter = new Filters.SubjectFilter
-            {
-                HoursMin = 10,
-                HoursMax = 20,
-                TeacherSurname = "a"
-            };
-            var result = await subjectService.GetSubjectsAsync(filter, CancellationToken.None);
-
-            // Assert
-            Assert.Equal(7, result.Length);
-        }
-        ////////////////////////////////////////////
+        ////////////////////////////////////////////TODO: ниже прописать данные для тестов
         [Fact]
         public async Task GetLessonsByTeacherSurname_()
         {
@@ -476,7 +541,7 @@ namespace MilenaDmitrievaKt_42_22.Tests
             Assert.Equal(7, result.Length);
         }
         ////////////////////////////////////////////////////////////////
-        //TODO тесты по запросам на изменение кроме удаления:
+        //TODO тесты по запросам на add:
         //Teacher
         [Fact]
         public async Task DeleteTeacher_3_True()
@@ -495,24 +560,27 @@ namespace MilenaDmitrievaKt_42_22.Tests
             Assert.True(((before - after) == 1) && (f == 0));
         }
         [Fact]
-        public async Task UpdateTeacher_()
+        public async Task UpdateTeacher_true()
         {
             // Arrange
             var ctx = await Arrange();
             var teacherService = new TeacherService(ctx);
-
+            int before = ctx.Set<Teacher>().Count();
             // Act
-            var filter = new Filters.TeacherFilters.TeacherFilter
+            var filter = new Filters.TeacherUpdate
             {
-                CafedraName = "d",
-                DegreeName = "e",
-                PositionName = "f",
-
+                Surname = "a",
+                DegreeId = 5,
+                CafedraId = 2,
+                TeacherId = 1,
             };
-            var result = await teacherService.GetTeachersAsync(filter, CancellationToken.None);
+            var result = await teacherService.UpdateTeacherAsync(filter, CancellationToken.None);
 
             // Assert
-            Assert.Equal(0, result.Length);
+            int after = ctx.Set<Teacher>().Count();
+            var t = ctx.Set<Teacher>().Find(1);
+            bool f = t.CafedraId == 2 && t.DegreeId == 5 && t.Surname == "a";
+            Assert.True(((before - after) == 0) && f);
         }
         [Fact]
         public async Task AddTeacher_()
@@ -553,24 +621,25 @@ namespace MilenaDmitrievaKt_42_22.Tests
             Assert.True(((before - after) == 1) && (f == 0));
         }
         [Fact]
-        public async Task UpdateSubject_()
+        public async Task UpdateSubject_true()
         {
             // Arrange
             var ctx = await Arrange();
-            var teacherService = new TeacherService(ctx);
-
+            var subjectService = new SubjectService(ctx);
+            int before = ctx.Set<Subject>().Count();
             // Act
-            var filter = new Filters.TeacherFilters.TeacherFilter
+            var filter = new Filters.SubjectUpdate
             {
-                CafedraName = "d",
-                DegreeName = "e",
-                PositionName = "f",
-
+                SubjectId = 3,
+                SubjectName = "p123",
             };
-            var result = await teacherService.GetTeachersAsync(filter, CancellationToken.None);
+            var result = await subjectService.UpdateSubjectAsync(filter, CancellationToken.None);
 
             // Assert
-            Assert.Equal(0, result.Length);
+            int after = ctx.Set<Subject>().Count();
+            var t = ctx.Set<Subject>().Find(3);
+            bool f = t.SubjectName == "p123";
+            Assert.True(((before - after) == 0) && f);
         }
         [Fact]
         public async Task AddSubject_()
@@ -612,24 +681,26 @@ namespace MilenaDmitrievaKt_42_22.Tests
             Assert.True(((before - after) == 1) && (f == 0));
         }
         [Fact]
-        public async Task UpdateCafedra_()
+        public async Task UpdateCafedra_true()
         {
             // Arrange
             var ctx = await Arrange();
-            var teacherService = new TeacherService(ctx);
-
+            var cafedraService = new CafedraService(ctx);
+            int before = ctx.Set<Cafedra>().Count();
             // Act
-            var filter = new Filters.TeacherFilters.TeacherFilter
+            var filter = new Filters.CafedraUpdate
             {
-                CafedraName = "d",
-                DegreeName = "e",
-                PositionName = "f",
-
+                CafedraId = 2,
+                CafedraName = "g567",
+                HeadId = 4,
             };
-            var result = await teacherService.GetTeachersAsync(filter, CancellationToken.None);
+            var result = await cafedraService.UpdateCafedraAsync(filter, CancellationToken.None);
 
             // Assert
-            Assert.Equal(0, result.Length);
+            int after = ctx.Set<Cafedra>().Count();
+            var t = ctx.Set<Cafedra>().Find(2);
+            bool f = t.CafedraName == "g567" && t.HeadId == 4;
+            Assert.True(((before - after) == 0) && f);
         }
         [Fact]
         public async Task AddCafedra_()
@@ -654,24 +725,27 @@ namespace MilenaDmitrievaKt_42_22.Tests
         //////////////////////////////////////////////////////////
         //Lessons
         [Fact]
-        public async Task UpdateLessons_()
+        public async Task UpdateLessons_true()
         {
             // Arrange
             var ctx = await Arrange();
-            var teacherService = new TeacherService(ctx);
-
+            var lessonsService = new LessonsService(ctx);
+            int before = ctx.Set<Lessons>().Count();
             // Act
-            var filter = new Filters.TeacherFilters.TeacherFilter
+            var filter = new Filters.LessonsUpdate
             {
-                CafedraName = "d",
-                DegreeName = "e",
-                PositionName = "f",
-
+                Hours=120,
+                TeacherId=8,
+                SubjectId=4,
+                LessonsId=2,
             };
-            var result = await teacherService.GetTeachersAsync(filter, CancellationToken.None);
+            var result = await lessonsService.UpdateLessonsAsync(filter, CancellationToken.None);
 
             // Assert
-            Assert.Equal(0, result.Length);
+            int after = ctx.Set<Lessons>().Count();
+            var t = ctx.Set<Lessons>().Find(2);
+            bool f = t.TeacherId == 8 && t.Hours == 120 && t.SubjectId==4;
+            Assert.True(((before - after) == 0) && f);
         }
         [Fact]
         public async Task AddLessons_()
