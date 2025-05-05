@@ -2,12 +2,14 @@
 using MilenaDmitrievaKt_42_22.Database;
 using MilenaDmitrievaKt_42_22.Filters;
 using MilenaDmitrievaKt_42_22.Models;
+using System.Threading;
 
 namespace MilenaDmitrievaKt_42_22.Interfaces
 {
     public interface ICafedraService
     {
         public Task<Cafedra[]> GetCafedrasAsync(CafedraFilter filter, CancellationToken cancellationToken);
+        public Task<Subject[]> GetSubjectsByTeachersByCafedraByHeadAsync(int id, CancellationToken cancellationToken);
         public Task<int> DeleteCafedraAsync(int id, CancellationToken cancellationToken);
         public Task<int> UpdateCafedraAsync(CafedraUpdate newCafedra, CancellationToken cancellationToken);
         public Task<int> AddCafedraAsync(CafedraAdd newCafedra, CancellationToken cancellationToken);
@@ -19,6 +21,15 @@ namespace MilenaDmitrievaKt_42_22.Interfaces
         public CafedraService(TeachersDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+        public Task<Subject[]> GetSubjectsByTeachersByCafedraByHeadAsync(int id, CancellationToken cancellationToken)
+        {
+            var s=_dbContext.Set<Subject>();
+            var l=_dbContext.Set<Lessons>();
+            var t=_dbContext.Set<Teacher>();
+            var c=_dbContext.Set<Cafedra>().Where(e=>e.HeadId==id);
+            var a = c.Join(t, c1 => c1.CafedraId, t1 => t1.CafedraId, (c2, t2) => t2).Join(l, e => e.TeacherId, l1 => l1.TeacherId, (e2, l2) => l2).Join(s,e=>e.SubjectId,s1=>s1.SubjectId,(e2,s2)=>s2).Distinct().ToArrayAsync(cancellationToken);
+            return a;
         }
         public Task<Cafedra[]> GetCafedrasAsync(CafedraFilter filter, CancellationToken cancellationToken = default)
         {
