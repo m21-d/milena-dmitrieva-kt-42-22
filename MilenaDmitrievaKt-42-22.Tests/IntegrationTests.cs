@@ -360,7 +360,6 @@ namespace MilenaDmitrievaKt_42_22.Tests
             {
                 HoursMin = 10,
                 HoursMax = 20,
-                TeacherSurname = "a"
             };
             var result = await subjectService.GetSubjectsAsync(filter, CancellationToken.None);
 
@@ -378,8 +377,6 @@ namespace MilenaDmitrievaKt_42_22.Tests
             // Act
             var filter = new Filters.SubjectFilter
             {
-                HoursMin = 10,
-                HoursMax = 20,
                 TeacherSurname = "a"
             };
             var result = await subjectService.GetSubjectsAsync(filter, CancellationToken.None);
@@ -418,8 +415,6 @@ namespace MilenaDmitrievaKt_42_22.Tests
             var filter = new Filters.LessonsFilter
             {
                 TeacherSurname = "a",
-                CafedraName = "a",
-                SubjectName = "a"
             };
             var result = await lessonsService.GetLessonsAsync(filter, CancellationToken.None);
 
@@ -437,9 +432,7 @@ namespace MilenaDmitrievaKt_42_22.Tests
             // Act
             var filter = new Filters.LessonsFilter
             {
-                TeacherSurname = "a",
                 CafedraName = "a",
-                SubjectName = "a"
             };
             var result = await lessonsService.GetLessonsAsync(filter, CancellationToken.None);
 
@@ -456,8 +449,6 @@ namespace MilenaDmitrievaKt_42_22.Tests
             // Act
             var filter = new Filters.LessonsFilter
             {
-                TeacherSurname = "a",
-                CafedraName = "a",
                 SubjectName = "a"
             };
             var result = await lessonsService.GetLessonsAsync(filter, CancellationToken.None);
