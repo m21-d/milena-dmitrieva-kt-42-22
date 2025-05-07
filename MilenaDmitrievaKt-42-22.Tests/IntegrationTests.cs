@@ -275,7 +275,158 @@ namespace MilenaDmitrievaKt_42_22.Tests
 
             return ctx;
         }
+
+        private async Task<TeachersDbContext> Arrange2()
+        {
+
+            var ctx = new TeachersDbContext(_dbContextOptions);
+            ctx.Database.EnsureDeleted();
+            ctx.Database.EnsureCreated();
+
+            var cafedras = new List<Cafedra>
+            {
+                new Cafedra
+                {
+                    CafedraName = "Кафедра1",
+                    Year=2000,
+                },
+                new Cafedra
+                {
+                    CafedraName = "Кафедра2",
+                    Year=2007,
+                },
+            };
+            await ctx.Set<Cafedra>().AddRangeAsync(cafedras);
+            var degrees = new List<Degree>
+            {
+                new Degree
+                {
+                    DegreeName = "y"
+                },
+                new Degree
+                {
+                    DegreeName = "d"
+                },
+                new Degree
+                {
+                    DegreeName = "e"
+                },
+            };
+            await ctx.Set<Degree>().AddRangeAsync(degrees);
+            var positions = new List<Position>
+            {
+                new Position
+                {
+                    PositionName = "f"
+                },
+                new Position
+                {
+                    PositionName = "ert"
+                },
+                new Position
+                {
+                    PositionName = "d"
+                },
+
+            };
+            await ctx.Set<Position>().AddRangeAsync(positions);
+            var teachers = new List<Teacher>
+            {
+                new Teacher
+                {
+                    Surname="Иванов",
+                    Name="Иван",
+                    Patronym="Иванович",
+                    PositionId=1,
+                    DegreeId=2,
+                    CafedraId=1,
+                },
+                new Teacher
+                {
+                    Surname="Петров",
+                    Name="Иван",
+                    Patronym="Иванович",
+                    PositionId=2,
+                    DegreeId=3,
+                    CafedraId=2,
+                },
+
+
+                new Teacher
+                {
+                    Surname="Сидоров",
+                    Name="Иван",
+                    Patronym="Иванович",
+                    PositionId=1,
+                    DegreeId=2,
+                    CafedraId=2,
+                },
+            };
+            await ctx.Set<Teacher>().AddRangeAsync(teachers);
+
+            var subjects = new List<Subject>
+            {
+                new Subject
+                {
+                    SubjectName="д1"
+                },
+                new Subject
+                {
+                    SubjectName="д2"
+                },
+            };
+            await ctx.Set<Subject>().AddRangeAsync(subjects);
+            var lessons = new List<Lessons>
+            {
+                new Lessons
+                {
+                    SubjectId=1,
+                    TeacherId=1,
+                    Hours=10
+                },
+                new Lessons
+                {
+                    SubjectId=1,
+                    TeacherId=3,
+                    Hours=8
+                },
+                new Lessons
+                {
+                    SubjectId=2,
+                    TeacherId=3,
+                    Hours=8
+                },
+            };
+            await ctx.Set<Lessons>().AddRangeAsync(lessons);
+            await ctx.SaveChangesAsync();
+            var heads = new List<int>
+            {
+                1,2
+            };
+            for (int i = 0; i < 2; i++)
+            {
+                ctx.Set<Cafedra>().Find(i + 1)!.HeadId = heads[i];
+            }
+            await ctx.SaveChangesAsync();
+
+            return ctx;
+        }
         /////////////////////////////////////////////////////////
+
+        [Fact]
+        public async Task GetSubjectsByTeachersByCafedraByHead_2()
+        {
+            // Arrange
+            var ctx = await Arrange2();
+            var cafedraService = new CafedraService(ctx);
+            // Act
+            var id = 1;
+            var result = await cafedraService.GetSubjectsByTeachersByCafedraByHeadAsync(id, CancellationToken.None);
+
+            // Assert
+            Assert.Equal(1, result.Length);
+        }
+
         [Fact]
         public async Task GetSubjectsByTeachersByCafedraByHead_7_5()
         {
@@ -294,17 +445,17 @@ namespace MilenaDmitrievaKt_42_22.Tests
         public async Task GetTeachersByCafedraAsync_qwe_7Obj()
         {
             // Arrange
-            var ctx = await Arrange();
+            var ctx = await Arrange2();
             var teacherService = new TeacherService(ctx);
             // Act
             var filter = new Filters.TeacherFilters.TeacherFilter
             {
-                CafedraName = "qwe"
+                CafedraName = "Кафедра2"
             };
             var result = await teacherService.GetTeachersAsync(filter, CancellationToken.None);
 
             // Assert
-            Assert.Equal(7, result.Length);
+            Assert.Equal(2, result.Length);
         }
 
 
